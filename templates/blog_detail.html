@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class=" container col-md-8 offset-md-2 ">
+
+
+            <h1 class="text-center">{{ post.title }}</h1>
+            <div class="card mb-4 wow fadeIn">
+
+                <img src={{ post.image.url }} class="img-fluid" alt="">
+
+            </div>
+
+            <p>
+
+                {{ post.created_on.date }} |&nbsp;
+
+                Categories:&nbsp;
+
+                {% for category in post.categories.all %}
+
+                <a href="{% url 'blog_category' category.name %}">
+
+                    {{ category.name }}
+
+                </a>&nbsp;
+
+
+                {% endfor %}
+
+                Tags:&nbsp;
+
+                {% for tags in post.tags.all %}
+
+                <a class="badge rounded-pill bg-secondary" href="{% url 'blog_tag' tags.slug %}">
+
+                    {{tags }}
+
+                </a>&nbsp;
+                {% endfor %}
+            </p>
+
+            <p>{{post.get_readtime}} read</p>
+            <br>
+
+            <p>{{ post.body | safe }}</p>
+            <div class="container my-5">
+                <h3 class="my-5">Leave a comment:</h3>
+                {% if messages %}
+
+                {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    {% if message.tags %} class=""{% endif %}>{{ message }}
+                </div>
+
+                {% endfor %}
+
+                {% endif %}
+                <form action="{% url 'blog_detail' slug=post.slug %}" method="post">
+
+                    {% csrf_token %}
+
+                    <div class="form-group mb-3">
+
+                        {{ form.author }}
+
+                    </div>
+
+                    <div class="form-group mb-5">
+
+                        {{ form.body }}
+
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                </form>
+                <div class="my-5">
+                    <h3>Comments:</h3>
+
+                    {% for comment in comments %}
+
+                    <p>
+
+                        On {{comment.created_on.date }}&nbsp;
+
+                        <b>{{ comment.author }}</b> wrote:
+
+                    </p>
+
+                    <p>{{ comment.body }}</p>
+
+                    <hr>
+
+                    {% endfor %}
+                </div>
+            </div>
+
+
+
+
+
+</div>
+
+{% endblock %}

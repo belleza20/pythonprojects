@@ -1,0 +1,7 @@
+# Environments
+.env
+.venv
+
+local_settings.py
+Procfile
+runtime.txt

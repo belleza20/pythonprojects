@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block  content%}
+
+<!-- Background image -->
+<div
+        class="p-5 text-center bg-image"
+        style="
+      background-image: url('/static/mdb/img/logan-nolin-EvceCyopkKI-unsplash.jpg' );
+      height: 500px;
+    "
+>
+    <div class="mask" style="background-color: rgba(0, 0, 0, 0.2)">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="text-white">
+                <h1 class=" text-dark mb-3">Bienvenue</h1>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Background image -->
+<div>
+<!--quote-->
+<div class="white-text w-50 h-75 mt-5 container">
+    <div class="  mt-5 p-3 ">
+        <blockquote class="blockquote text-center my-3">
+            <p class="mb-0"> You deserve love, peace, harmony and care even during your worst moments.</p>
+            <footer class="blockquote-footer mt-2"> A caring writer
+            </footer>
+        </blockquote>
+    </div>
+</div>
+<!--quote-->
+
+
+<div class="my-5  col-md-8 offset-md-2 container">
+    <h2 class="text-center black"><b>Recent Posts</b></h2>
+    <div class="mt-5 row">
+        <div class=" mt-3 col-md-10">
+           {% for post in posts|slice:":5" %}
+            <div class=" mt-5 row">
+                <div class="col-md-4">
+                    <div class="md-image">
+                        <img
+                                src={{ post.image.url }}
+                                class="img-fluid"
+
+                        />
+
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <h3><a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a></h3>
+                    <p>{{ post.body|truncatechars_html:200|safe }}</p>
+                    <small class="text-black">
+
+                        {{ post.created_on.date }} |&nbsp;
+
+                        Categories:&nbsp;
+
+                        {% for category in post.categories.all %}
+
+                        <a class="badge rounded-pill bg-info" href="{% url 'blog_category' category.name %}">
+
+                            {{ category.name }}
+
+                        </a>&nbsp;
+
+                        {% endfor %}
+
+                    </small>
+                    <br>
+                    <small>
+
+
+
+                        Tags:&nbsp;
+
+                        {% for tag in post.tags.all %}
+
+                        <a class="badge rounded-pill bg-secondary" href="{% url 'blog_tag' tag.slug %}" >
+
+                            {{ tag }}
+
+                        </a>&nbsp;
+
+                        {% endfor %}
+
+                    </small>
+                    <br>
+                    {{post.get_readtime}} read
+                    <br>
+                    <a href="{% url 'blog_detail' post.slug %}">Read More</a>
+
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+</div>
+</div>
+{% endblock %}
